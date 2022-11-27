@@ -1,9 +1,10 @@
+import os
+import subprocess
 from pathlib import Path
-import os, subprocess
+
+import dj_database_url
 import django_on_heroku
 import environ
-import dj_database_url
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +30,7 @@ SECRET_KEY = env("SECRET_KEY")
 # False if not in os.environ because of casting above
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = ["tiyapakhi2.herokuapp.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 # ALLOWED_HOSTS = env('ALLOWED_HOST')
 
 
