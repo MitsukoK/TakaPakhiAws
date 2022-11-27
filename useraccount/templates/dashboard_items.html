@@ -1,0 +1,14 @@
+<div class="mr-64">
+  {% comment %}
+  <h2 class="font-bold text-blue-100 text-5xl">ksdfjlsdk</h2>
+  {% endcomment %}
+  <ul>
+    {% for bank in object_list %}
+    <li>
+      {{ bank.user }} - {{ bank.amount }} - {{ bank.bank_name }} -
+      {{bank.bank_account_number }} - {{ bank.bank_account_name }} -
+      {{bank.branch_name}} - {{bank.status}}
+    </li>
+    {% endfor %}
+  </ul>
+</div>

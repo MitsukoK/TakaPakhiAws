@@ -1,0 +1,25 @@
+{% extends "_account_page.html" %} {% block loginform %}
+
+<form action="{% url  'post_request' %}" method="post">
+  {% csrf_token %} {{form}} {% comment %} <label for="money">Money: </label>
+  <input id="money" type="text" name="money" value="{{ money_int }}" />
+  <br />
+  <br />
+  <label for="phone">Phone: </label>
+  <input id="phone" type="text" name="phone" value="{{ phone_number }}" />
+  <br />
+  <br />
+  <label for="method">Method: </label>
+  <input id="method" type="text" name="method" value="{{ method_name }}" />
+  <br />
+  <br />
+  {% endcomment %}
+
+  <button
+    type="submit"
+    class="text-white mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+    Register new account
+  </button>
+</form>
+
+{% endblock loginform %}
