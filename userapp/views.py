@@ -2,7 +2,7 @@ from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-# from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from userapp.models import NewUser
 from userapp.serializer import NewUserSerializer
 
@@ -36,3 +36,39 @@ class UserDetailView(APIView):
             # return Response("user details", status=HTTP_200_OK)
 
         return Response("user not authenticated", status=HTTP_200_OK)
+
+
+class UserBankView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, req):
+        if req.user.is_authenticated:
+            # get the user details
+            _user = NewUser.objects.filter(username=req.user.username)
+            # print(_user.bank)
+            # return _user.values("bank")
+            return Response(_user.values("bank"), status=HTTP_200_OK)
+
+
+class UserRechargeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, req):
+        if req.user.is_authenticated:
+            # get the user details
+            _user = NewUser.objects.filter(username=req.user.username)
+            # print(_user.mobile_recharge)
+            # return _user.values("mobile_recharge")
+            return Response(_user.values("mobile_recharge"), status=HTTP_200_OK)
+
+
+class UserMobileBankView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, req):
+        if req.user.is_authenticated:
+            # get the user details
+            _user = NewUser.objects.filter(username=req.user.username)
+            # print(_user.mobile_banking)
+            # return _user.values("mobile_banking")
+            return Response(_user.values("mobile_banking"), status=HTTP_200_OK)
