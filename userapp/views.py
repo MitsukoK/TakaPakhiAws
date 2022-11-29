@@ -25,7 +25,6 @@ class UserDetailView(APIView):
     def get(self, req):
         # check if user is authenticated
         if req.user.is_authenticated:
-
             # get the user details
             _user = NewUser.objects.filter(username=req.user.username)
             # _user = NewUser.objects.get(id=req.user.id)
@@ -44,10 +43,15 @@ class UserBankView(APIView):
     def get(self, req):
         if req.user.is_authenticated:
             # get the user details
-            _user = NewUser.objects.filter(username=req.user.username)
+            # _user = NewUser.objects.filter(username=req.user.username)
             # print(_user.bank)
             # return _user.values("bank")
-            return Response(_user.values("bank"), status=HTTP_200_OK)
+            # return Response(_user.values("bank"), status=HTTP_200_OK)
+            _user = NewUser.objects.get(id=req.user.id)
+            # get the bank details
+            _bank = _user.bank
+            # return _bank as response
+            return Response(_bank, status=HTTP_200_OK)
 
 
 class UserRechargeView(APIView):
@@ -56,10 +60,15 @@ class UserRechargeView(APIView):
     def get(self, req):
         if req.user.is_authenticated:
             # get the user details
-            _user = NewUser.objects.filter(username=req.user.username)
+            # _user = NewUser.objects.filter(username=req.user.username)
             # print(_user.mobile_recharge)
             # return _user.values("mobile_recharge")
-            return Response(_user.values("mobile_recharge"), status=HTTP_200_OK)
+            # return Response(_user.values("mobile_recharge"), status=HTTP_200_OK)
+            _user = NewUser.objects.get(id=req.user.id)
+            # get the bank details
+            _mobile_recharge = _user.mobile_recharge
+            # return _bank as response
+            return Response(_mobile_recharge, status=HTTP_200_OK)
 
 
 class UserMobileBankView(APIView):
@@ -68,7 +77,38 @@ class UserMobileBankView(APIView):
     def get(self, req):
         if req.user.is_authenticated:
             # get the user details
-            _user = NewUser.objects.filter(username=req.user.username)
+            # _user = NewUser.objects.filter(username=req.user.username)
             # print(_user.mobile_banking)
             # return _user.values("mobile_banking")
-            return Response(_user.values("mobile_banking"), status=HTTP_200_OK)
+            # return Response(_user.values("mobile_banking"), status=HTTP_200_OK)
+            _user = NewUser.objects.get(id=req.user.id)
+            # mobile bnak
+            _mobile_banking = _user.mobile_banking
+            return Response(_mobile_banking, status=HTTP_200_OK)
+
+
+class UserCurrentBalanceView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, req):
+        if req.user.is_authenticated:
+            _user = NewUser.objects.get(id=req.user.id)
+            # current balance
+            _current_balance = _user.current_balance
+            return Response(_current_balance, status=HTTP_200_OK)
+
+
+class UserFullDetailsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, req):
+        if req.user.is_authenticated:
+            # get the user details
+            # _user = NewUser.objects.filter(username=req.user.username)
+            # print(_user)
+            # return _user.values()
+            # return Response(_user.values(), status=HTTP_200_OK)
+            _user = NewUser.objects.get(id=req.user.id)
+            # current balance
+            _full_details = _user
+            return Response(_full_details, status=HTTP_200_OK)
