@@ -1,9 +1,10 @@
+import os
+import subprocess
 from pathlib import Path
-import os, subprocess
+
+import dj_database_url
 import django_on_heroku
 import environ
-import dj_database_url
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,7 +30,7 @@ SECRET_KEY = env("SECRET_KEY")
 # False if not in os.environ because of casting above
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = ["tiyapakhi2.herokuapp.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 # ALLOWED_HOSTS = env('ALLOWED_HOST')
 
 
@@ -92,28 +93,16 @@ TEMPLATES = [
 WSGI_APPLICATION = "tekapakhi.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 DATABASES = {
-    "default": dj_database_url.config(
-        conn_max_age=600, default="sqlite:///" + os.path.join(BASE_DIR, "db.sqlite3")
-    )
-    # "default": {
-    #     "ENGINE": "django.db.backends.sqlite3",
-    #     "NAME": BASE_DIR / "db.sqlite3",
-    #     # 'ENGINE': 'django.db.backends.mysql',
-    #     # 'NAME':'romjan_db',
-    #     # 'USER':'romjan',
-    #     # 'PASSWORD':'fuck you',
-    #     # 'HOST':'localhost',
-    #     # 'PORT':'3306',
-    # }
+    "default": {
+        "ENGINE": env("dbengine"),
+        "NAME": env("dbname"),
+        "USER": env("dbuser"),
+        "PASSWORD": env("dbpass"),
+        "HOST": env("dbhost"),
+        "PORT": env("dbport"),
+    }
 }
-
-# DATABASES = {}
-# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
