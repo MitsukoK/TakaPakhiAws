@@ -92,11 +92,6 @@ class UserCurrentBalanceView(APIView):
 
     def get(self, req):
         if req.user.is_authenticated:
-            # get the user details
-            # _user = NewUser.objects.filter(username=req.user.username)
-            # print(_user.current_balance)
-            # return _user.values("current_balance")
-            # return Response(_user.values("current_balance"), status=HTTP_200_OK)
             _user = NewUser.objects.get(id=req.user.id)
             # current balance
             _current_balance = _user.current_balance
