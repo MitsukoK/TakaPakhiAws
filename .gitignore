@@ -156,3 +156,9 @@ cython_debug/
 
 db.sqlite3
 **/__pycache__/*
+
+
+# tekapakhi pycache
+tekapakhi/__pycache__/*
+# userapp pycache
+userapp/__pycache__/*
