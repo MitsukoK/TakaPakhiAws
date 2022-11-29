@@ -114,15 +114,24 @@ WSGI_APPLICATION = "tekapakhi.wsgi.application"
 #     }
 # else:
 DATABASES = {
+    # "default": {
+    #     "ENGINE": "django.db.backends.mysql",
+    #     "NAME": "takapakhi",
+    #     "USER": env("dbuser"),
+    #     "PASSWORD": env("dbpass"),
+    #     "HOST": env("dbhost"),
+    #     "PORT": "3306",
+    # }
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "takapakhi",
+        "ENGINE": env("dbengine"),
+        "NAME": env("dbname"),
         "USER": env("dbuser"),
         "PASSWORD": env("dbpass"),
         "HOST": env("dbhost"),
-        "PORT": "3306",
+        "PORT": env("dbport"),
     }
 }
+
 
 # DATABASES = {}
 # DATABASES['default'] = dj_database_url.config(conn_max_age=600)
