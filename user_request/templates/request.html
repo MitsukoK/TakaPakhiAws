@@ -1,9 +1,52 @@
 {% extends "_requests.html" %} {% block content %}
+<div class="flex">
+  <a
+    href="#"
+    class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+  >
+    <h5
+      class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+    >
+      Noteworthy technology acquisitions 2021
+    </h5>
+    <p class="font-normal text-gray-700 dark:text-gray-400">
+      Here are the biggest enterprise technology acquisitions of 2021 so far, in
+      reverse chronological order.
+    </p> </a
+  ><a
+    href="#"
+    class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+  >
+    <h5
+      class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+    >
+      Noteworthy technology acquisitions 2021
+    </h5>
+    <p class="font-normal text-gray-700 dark:text-gray-400">
+      Here are the biggest enterprise technology acquisitions of 2021 so far, in
+      reverse chronological order.
+    </p> </a
+  ><a
+    href="#"
+    class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+  >
+    <h5
+      class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+    >
+      Noteworthy technology acquisitions 2021
+    </h5>
+    <p class="font-normal text-gray-700 dark:text-gray-400">
+      Here are the biggest enterprise technology acquisitions of 2021 so far, in
+      reverse chronological order.
+    </p>
+  </a>
+</div>
 <h1 class="text-xl p-4">Banking</h1>
 <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead
-      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+    >
       <tr>
         <th scope="col" class="py-3 px-6">User</th>
         <th scope="col" class="py-3 px-6">Bank Name</th>
@@ -19,7 +62,8 @@
       <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
         <th
           scope="row"
-          class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
           {{bank.user.username}}
         </th>
         <td class="py-4 px-6">{{bank.bank_name}}</td>
@@ -30,12 +74,14 @@
         <td class="py-4 px-6">
           {% if 'Declined' in bank.status %}
           <p
-            class="font-medium text-red-600 dark:text-red-500 hover:underline-offset-0">
+            class="font-medium text-red-600 dark:text-red-500 hover:underline-offset-0"
+          >
             {{bank.status}}
           </p>
           {% elif 'Approved' in bank.status%}
           <p
-            class="font-medium text-green-600 dark:text-green-500 hover:underline">
+            class="font-medium text-green-600 dark:text-green-500 hover:underline"
+          >
             {{bank.status}}
           </p>
           {% else %}
@@ -56,7 +102,8 @@
 <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead
-      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+    >
       <tr>
         <th scope="col" class="py-3 px-6">User</th>
         <th scope="col" class="py-3 px-6">Phone Number</th>
@@ -70,7 +117,8 @@
       <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
         <th
           scope="row"
-          class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
           {{bank.user.username}}
         </th>
         <td class="py-4 px-6">{{bank.phone_number}}</td>
@@ -93,7 +141,8 @@
 <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead
-      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+    >
       <tr>
         <th scope="col" class="py-3 px-6">User</th>
         <th scope="col" class="py-3 px-6">Phone Number</th>
@@ -107,7 +156,8 @@
       <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
         <th
           scope="row"
-          class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
           {{bank.user.username}}
         </th>
         <td class="py-4 px-6">{{bank.phone_number}}</td>
