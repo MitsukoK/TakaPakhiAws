@@ -6,6 +6,8 @@ from rest_framework.permissions import IsAuthenticated
 from userapp.models import NewUser
 from userapp.serializer import NewUserSerializer
 
+from banking.models import BankingMethod
+
 # Create your views here.
 
 
@@ -66,9 +68,24 @@ class UserRechargeView(APIView):
             # return Response(_user.values("mobile_recharge"), status=HTTP_200_OK)
             _user = NewUser.objects.get(id=req.user.id)
             # get the bank details
-            _mobile_recharge = _user.mobile_recharge
+            _mobile_recharge = _user.mobile_recharge  # List<String>
+
+            _banking_detail = [
+                BankingMethod.objects.get(name=recharge, types="Mobile Recharge")
+                for recharge in _mobile_recharge
+            ]
+
+            json_data = {}
+            # now add the data to json
+            for i in range(len(_banking_detail)):
+                json_data[i] = {
+                    _banking_detail[i].name,
+                    _banking_detail[i].logo.url,
+                    _banking_detail[i].types,
+                }
+            print("banking details -> ", json_data)
             # return _bank as response
-            return Response(_mobile_recharge, status=HTTP_200_OK)
+            return Response(json_data, status=HTTP_200_OK)
 
 
 class UserMobileBankView(APIView):
