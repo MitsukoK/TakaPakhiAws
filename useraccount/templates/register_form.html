@@ -1,16 +1,4 @@
-{% comment %}
-<div class="container py-5">
-  <h1>Register</h1>
-  <form method="POST">
-    {% csrf_token %} {{ register_form }}
-    <button class="btn btn-primary" type="submit">Register</button>
-  </form>
-  <p class="text-center">
-    If you already have an account, <a href="/login">login</a> instead.
-  </p>
-</div>
-{% endcomment %}
-
+{% extends "_account_page.html" %} {% block loginform %}
 <h1>Register</h1>
 <form method="POST">
   {% csrf_token %} {% for field in form %}
@@ -28,7 +16,9 @@
         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
         >{{field.label_tag}}</label
       >
-      {% endif %} {{field}} {% if field.help_text %}
+      {% if field.label_tag == "First name" %}
+      <h1>This ain't first name</h1>
+      {% endif %} {% endif %} {{field}} {% if field.help_text %}
       <p class="text-xs text-gray-500 dark:text-gray-400">
         {{field.help_text}}
       </p>
@@ -38,7 +28,10 @@
   {% endfor %}
   <button
     type="submit"
-    class="text-white mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+    class="text-white mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+  >
     Register
   </button>
 </form>
+
+{% endblock loginform %}
