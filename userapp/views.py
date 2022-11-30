@@ -52,8 +52,21 @@ class UserBankView(APIView):
             _user = NewUser.objects.get(id=req.user.id)
             # get the bank details
             _bank = _user.bank
+            _banking_detail = [
+                BankingMethod.objects.get(name=recharge, types="Bank")
+                for recharge in _bank
+            ]
+
+            json_data = {}
+            # now add the data to json
+            for i in range(len(_banking_detail)):
+                json_data[i] = {
+                    _banking_detail[i].name,
+                    _banking_detail[i].logo.url,
+                    _banking_detail[i].types,
+                }
             # return _bank as response
-            return Response(_bank, status=HTTP_200_OK)
+            return Response(json_data, status=HTTP_200_OK)
 
 
 class UserRechargeView(APIView):
@@ -83,7 +96,7 @@ class UserRechargeView(APIView):
                     _banking_detail[i].logo.url,
                     _banking_detail[i].types,
                 }
-            print("banking details -> ", json_data)
+            # print("banking details -> ", json_data)
             # return _bank as response
             return Response(json_data, status=HTTP_200_OK)
 
@@ -101,7 +114,20 @@ class UserMobileBankView(APIView):
             _user = NewUser.objects.get(id=req.user.id)
             # mobile bnak
             _mobile_banking = _user.mobile_banking
-            return Response(_mobile_banking, status=HTTP_200_OK)
+            _banking_detail = [
+                BankingMethod.objects.get(name=recharge, types="Mobile Banking")
+                for recharge in _mobile_banking
+            ]
+
+            json_data = {}
+            # now add the data to json
+            for i in range(len(_banking_detail)):
+                json_data[i] = {
+                    _banking_detail[i].name,
+                    _banking_detail[i].logo.url,
+                    _banking_detail[i].types,
+                }
+            return Response(json_data, status=HTTP_200_OK)
 
 
 class UserCurrentBalanceView(APIView):
