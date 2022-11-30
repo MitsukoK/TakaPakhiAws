@@ -57,14 +57,20 @@ class UserBankView(APIView):
                 for recharge in _bank
             ]
 
-            json_data = {}
+            json_data = []
             # now add the data to json
             for i in range(len(_banking_detail)):
-                json_data[i] = {
-                    _banking_detail[i].name,
-                    _banking_detail[i].logo.url,
-                    _banking_detail[i].types,
+                data = {
+                    "name": _banking_detail[i].name,
+                    "logo": _banking_detail[i].logo.url,
+                    "type": _banking_detail[i].types,
                 }
+                json_data.append(data)
+                # json_data[i] = {
+                #     _banking_detail[i].name,
+                #     _banking_detail[i].logo.url,
+                #     _banking_detail[i].types,
+                # }
             # return _bank as response
             return Response(json_data, status=HTTP_200_OK)
 
@@ -88,14 +94,20 @@ class UserRechargeView(APIView):
                 for recharge in _mobile_recharge
             ]
 
-            json_data = {}
+            json_data = []
             # now add the data to json
             for i in range(len(_banking_detail)):
-                json_data[i] = {
-                    _banking_detail[i].name,
-                    _banking_detail[i].logo.url,
-                    _banking_detail[i].types,
+                data = {
+                    "name": _banking_detail[i].name,
+                    "logo": _banking_detail[i].logo.url,
+                    "type": _banking_detail[i].types,
                 }
+                json_data.append(data)
+                # json_data[i] = {
+                #     _banking_detail[i].name,
+                #     _banking_detail[i].logo.url,
+                #     _banking_detail[i].types,
+                # }
             # print("banking details -> ", json_data)
             # return _bank as response
             return Response(json_data, status=HTTP_200_OK)
@@ -119,14 +131,16 @@ class UserMobileBankView(APIView):
                 for recharge in _mobile_banking
             ]
 
-            json_data = {}
+            json_data = []
             # now add the data to json
             for i in range(len(_banking_detail)):
-                json_data[i] = {
-                    _banking_detail[i].name,
-                    _banking_detail[i].logo.url,
-                    _banking_detail[i].types,
+                data = {
+                    "name": _banking_detail[i].name,
+                    "logo": _banking_detail[i].logo.url,
+                    "type": _banking_detail[i].types,
                 }
+                json_data.append(data)
+
             return Response(json_data, status=HTTP_200_OK)
 
 
