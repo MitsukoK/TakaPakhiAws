@@ -161,4 +161,4 @@ db.sqlite3
 # tekapakhi pycache
 tekapakhi/__pycache__/*
 # userapp pycache
-userapp/__pycache__/*
+userapp/__pycache__/*.pyc
