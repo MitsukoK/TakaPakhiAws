@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import login, logouth, RegisterFormView, DashboardView
+from .views import login, logouth, RegisterFormView, DashboardView, dashboard
 
 urlpatterns = [
     # path("", UserView.as_view(), name="userview"),
@@ -9,5 +9,6 @@ urlpatterns = [
     path(
         "register/", RegisterFormView.as_view(), name="register_form"
     ),  # RegisterFormView
-    path("dashboard/", DashboardView.as_view(), name="dashboard_items"),
+    # path("dashboard/", DashboardView.as_view(), name="dashboard_items"),
+    path("dashboard/", dashboard, name="dashboard_items"),
 ]

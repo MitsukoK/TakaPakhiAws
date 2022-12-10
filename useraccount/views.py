@@ -101,3 +101,14 @@ class DashboardView(ListView):
     #     if not request.user.is_superuser:
     #         return redirect("login_form")
     #     return render(request, self.template_name, {})
+
+def dashboard(request):
+
+    context = {
+        "MobileBank": RequestMobileBankModel.objects.all().order_by("-id")[:10],
+        "MobileRecharge": RequestMobileRechargeModel.objects.all().order_by("-id")[:10],
+        "Banking": BankingModel.objects.all().order_by("-id")[:10],
+        "GiftCard": BankingModel.objects.all().order_by("-id")[:10],
+    }
+
+    return render(request, "dashboard_items.html", context)
