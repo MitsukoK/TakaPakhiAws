@@ -30,7 +30,7 @@ SECRET_KEY = env("SECRET_KEY")
 # False if not in os.environ because of casting above
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["zune360.com", "zune360.com", "https://zune360.com/", "127.0.0.1"]
 # ALLOWED_HOSTS = env('ALLOWED_HOST')
 
 
