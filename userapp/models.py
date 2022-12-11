@@ -42,29 +42,33 @@ class NewUser(AbstractUser):
         ],
         default=0000,
     )
-    # mobile_banking = MultiSelectField(
-    #     choices=MOBILE_BANKING,
-    #     max_length=100,
-    #     default=MOBILE_BANKING[0][0],
-    #     # max_choices=5,
-    # )  # type: ignore
-    # mobile_recharge = MultiSelectField(
-    #     max_length=100,
-    #     choices=MOBILE_RECHARGE,
-    #     default=MOBILE_RECHARGE[0][0],
-    #     # max_choices=4,
-    # )  # type: ignore
-    # gift_card = MultiSelectField(
-    #     max_length=100,
-    #     choices=GIFT_CARD,
-    #     # max_choices=1,
-    # )  # type: ignore
-    # bank = MultiSelectField(
-    #     max_length=100,
-    #     choices=BANK,
-    #     default=BANK[0][0],
-    #     # max_choices=10,
-    # )  # type: ignore
+
+    mobile_banking = MultiSelectField(
+        choices=MOBILE_BANKING,
+        max_length=100,
+        default=MOBILE_BANKING[0][0],
+        # max_choices=5,
+    )  # type: ignore
+    mobile_recharge = MultiSelectField(
+        max_length=100,
+        choices=MOBILE_RECHARGE,
+        default=MOBILE_RECHARGE[0][0],
+        # max_choices=4,
+    )  # type: ignore
+    gift_card = MultiSelectField(
+        max_length=100,
+        choices=GIFT_CARD,
+        # max_choices=1,
+    )  # type: ignore
+    bank = MultiSelectField(
+        max_length=100,
+        choices=BANK,
+        default=BANK[0][0],
+        # max_choices=10,
+    )  # type: ignore
+    # ? user isReseller
+    isReseller = models.BooleanField(default=False)
+
 
     # transaction = models.ForeignKey("app.Model", verbose_name=_(""), on_delete=models.CASCADE)
     # notification = models.ForeignKey("app.Model", verbose_name=_(""), on_delete=models.CASCADE)

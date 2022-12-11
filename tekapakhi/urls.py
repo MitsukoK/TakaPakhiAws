@@ -1,7 +1,11 @@
-from django.contrib import admin
-from django.urls import path, include
-from tekapakhi import settings
 from django.conf.urls.static import static  # new
+from django.contrib import admin
+from django.urls import include, path
+
+from tekapakhi import settings
+
+admin.site.site_header = "Takapakhi Admin"
+admin.site.index_title = "Admin"
 
 urlpatterns = [
     path("", include("landing.urls")),
