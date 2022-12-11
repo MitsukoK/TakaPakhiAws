@@ -3,21 +3,22 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 from phonenumber_field.modelfields import PhoneNumberField
 from multiselectfield import MultiSelectField
-from banking.models import BankingMethod
+
+# from banking.models import BankingMethod
 
 
 class NewUser(AbstractUser):
-    _allRecharge = BankingMethod.objects.filter(types="Mobile Recharge")
-    _banking = BankingMethod.objects.filter(types="Mobile Banking")
-    _bank = BankingMethod.objects.filter(types="Bank")
-    _giftCard = BankingMethod.objects.filter(types="Gift Card")
-    MOBILE_BANKING = tuple((i.name, i.name) for i in _banking)
+    # _allRecharge = BankingMethod.objects.filter(types="Mobile Recharge")
+    # _banking = BankingMethod.objects.filter(types="Mobile Banking")
+    # _bank = BankingMethod.objects.filter(types="Bank")
+    # _giftCard = BankingMethod.objects.filter(types="Gift Card")
+    # MOBILE_BANKING = tuple((i.name, i.name) for i in _banking)
 
-    BANK = tuple((i.name, i.name) for i in _bank)
+    # BANK = tuple((i.name, i.name) for i in _bank)
 
-    GIFT_CARD = tuple((i.name, i.name) for i in _giftCard)
+    # GIFT_CARD = tuple((i.name, i.name) for i in _giftCard)
 
-    MOBILE_RECHARGE = tuple((i.name, i.name) for i in _allRecharge)
+    # MOBILE_RECHARGE = tuple((i.name, i.name) for i in _allRecharge)
 
     phone_number = PhoneNumberField(
         blank=True,
@@ -41,6 +42,7 @@ class NewUser(AbstractUser):
         ],
         default=0000,
     )
+
     mobile_banking = MultiSelectField(
         choices=MOBILE_BANKING,
         max_length=100,
@@ -66,6 +68,7 @@ class NewUser(AbstractUser):
     )  # type: ignore
     # ? user isReseller
     isReseller = models.BooleanField(default=False)
+
 
     # transaction = models.ForeignKey("app.Model", verbose_name=_(""), on_delete=models.CASCADE)
     # notification = models.ForeignKey("app.Model", verbose_name=_(""), on_delete=models.CASCADE)
