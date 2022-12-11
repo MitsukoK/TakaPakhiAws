@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout
 from django.views import View
 from django.views.generic import ListView
 from .forms import NewUserForm
@@ -12,13 +12,19 @@ from user_request.models import (
     RequestMobileRechargeModel,
 )
 
-# Create your views here.
 
+# def login(request):
+#     # if post method is called
+#     if request.method == "POST":
+#         print("post method called in login\n\n\n\n")
+#         username = request.POST["username"]
+#         password = request.POST["password"]
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             return redirect("dashboard_items")
 
-def login(request):
-    # return render(request, "index.html")
-
-    return render(request, "login_form.html", {})
+#     return render(request, "login_form.html", {})
 
 
 # def register(request):
@@ -43,6 +49,52 @@ def login(request):
 #         "register_form.html",
 #         context={"register_form": form},
 #     )
+
+
+class LoginView(View):
+    template_name = "login_form.html"
+
+    # @method_decorator(ensure_csrf_cookie)
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("dashboard_items")
+        return render(request, self.template_name, {})
+
+    # @method_decorator(ensure_csrf_cookie)
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("dashboard_items")
+
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+        if not user:
+            messages.error(request, "User Does Not Exist")
+            return render(request, self.template_name, {})
+        elif not user.is_active:
+            messages.warning(request, "User is not active")
+            return render(request, self.template_name, {})
+        elif not user.check_password(password):
+            messages.error(request, "Invalid Password")
+            return render(request, self.template_name, {})
+        else:
+            login(request, user)
+            messages.success(request, "Login successful.")
+            return redirect("dashboard_items")
+        # if forum.is_valid():
+        #     print("form is valid", forum.cleaned_data, "\n\n\n\n")
+        #     # cleaned_data = forum.cleaned_data
+        #     cleaned_data = forum.clean()
+        #     print(cleaned_data)
+        #     # user = form.save()
+        #     forum.save()
+        #     # login(request, user)
+        #     messages.success(request, "Login successful.")
+        #     return redirect("dashboard_items")
+        # elif forum.errors:
+        #     _e = forum.errors.as_data()
+        #     messages.error(request, _e["__all__"][0])
+        return render(request, self.template_name, {})
 
 
 class RegisterFormView(View):
@@ -83,20 +135,16 @@ def logouth(request):
     return render(request, "index.html", {})
 
 
-# def dashboard(request):
-#     return render(request, "dashboard_items.html", {})
-
-
-class DashboardView(ListView):
+class DashboardView(View):
     template_name = "dashboard_items.html"
     # use all models form the user_request app
-    model = BankingModel
+    # model = BankingModel
 
-    # def get(self, request, *args, **kwargs):
-    #     if not request.user.is_superuser:
-    #         return redirect("login_form")
-    #     return render(request, self.template_name, {})
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("login_form")
 
+<<<<<<< HEAD
     # def post(self, request, *args, **kwargs):
     #     if not request.user.is_superuser:
     #         return redirect("login_form")
@@ -112,3 +160,27 @@ def dashboard(request):
     }
 
     return render(request, "dashboard_items.html", context)
+=======
+        context = {
+            "MobileBank": RequestMobileBankModel.objects.all().order_by("-id")[:10],
+            "MobileRecharge": RequestMobileRechargeModel.objects.all().order_by("-id")[:10],
+            "Banking": BankingModel.objects.all().order_by("-id")[:10],
+            "GiftCard": BankingModel.objects.all().order_by("-id")[:10],
+        }
+        return render(request, self.template_name, context)
+
+
+# def dashboard(request):
+#     if not request.user.is_superuser:
+#         return redirect("login_form")
+#     # return render(request, self.template_name, {})
+
+#     context = {
+#         "MobileBank": RequestMobileBankModel.objects.all().order_by("-id")[:10],
+#         "MobileRecharge": RequestMobileRechargeModel.objects.all().order_by("-id")[:10],
+#         "Banking": BankingModel.objects.all().order_by("-id")[:10],
+#         "GiftCard": BankingModel.objects.all().order_by("-id")[:10],
+#     }
+
+#     return render(request, "dashboard_items.html", context)
+>>>>>>> home

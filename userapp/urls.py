@@ -7,13 +7,19 @@ from .views import (
     UserBankView,
     UserRechargeView,
     UserMobileBankView,
+    UserCurrentBalanceView,
 )
 
 urlpatterns = [
-    path("", UserDetailView.as_view(), name="userdetailview"),
-    path("login/", obtain_auth_token, name="login"),
-    path("logout/", LogoutView.as_view(), name="logout"),
-    path("bank/", UserBankView.as_view(), name="user_bank"),
-    path("recharge/", UserRechargeView.as_view(), name="user_recharge"),
-    path("mobile_bank/", UserMobileBankView.as_view(), name="user_mobile_bank"),
+    # path("", UserDetailView.as_view(), name="userdetailview"),
+    # path("login/", obtain_auth_token, name="login"),
+    # path("logout/", LogoutView.as_view(), name="logout"),
+    # path("bank/", UserBankView.as_view(), name="user_bank"),
+    # path("recharge/", UserRechargeView.as_view(), name="user_recharge"),
+    # path("mobile_bank/", UserMobileBankView.as_view(), name="user_mobile_bank"),
+    # path(
+    #     "current_balance/",
+    #     UserCurrentBalanceView.as_view(),
+    #     name="user_current_balance",
+    # ),
 ]

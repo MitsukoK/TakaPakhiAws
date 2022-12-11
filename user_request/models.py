@@ -22,6 +22,8 @@ class RequestMobileBankModel(models.Model):
     amount = models.IntegerField()
     # phone number
     phone_number = models.CharField(max_length=100)
+    # bank name
+    bank_name = models.CharField(max_length=100)
     # choice field (personal, agent)
     choice = models.CharField(
         choices=MOBILE_BANKING_CHOICE,

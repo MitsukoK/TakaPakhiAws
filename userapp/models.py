@@ -7,77 +7,16 @@ from banking.models import BankingMethod
 
 
 class NewUser(AbstractUser):
-    # age = models.IntegerField(null=True, blank=True)
-    # nickname = models.CharField(max_length=20, null=True, blank=True)
-    # MOBILE RECHARGE
     _allRecharge = BankingMethod.objects.filter(types="Mobile Recharge")
-    # AIRTEL = "Airtel"
-    # BANGLALINK = "Banglalink"
-    # GRAMEEN_PHONE = "Grameen Phone"
-    # ROBI = "Robi"
-    # TELETALK = "Teletalk"
-    # MOBILE BANKING
     _banking = BankingMethod.objects.filter(types="Mobile Banking")
-    # MKASH = "Mkash"
-    # BKASH = "Bkash"
-    # ROKET = "Roket"
-    # UPAY = "Upay"
-    # SURECASH = "Surecash"
-    # NAGAD = "Nagad"
-    # BANK
     _bank = BankingMethod.objects.filter(types="Bank")
-    # ASIA_BANK = "Asia Bank"
-    # BRACK_BANK = "Brack Bank"
-    # CITY_BANK = "City Bank"
-    # DBBL = "DBBL"
-    # EBL = "EBL"
-    # EXIM_BANK = "Exim Bank"
-    # ISLAMI_BANK = "Islami Bank"
-    # MUTUAL_TRUST_BANK = "Mutual Trust Bank"
-    # ONE_BANK = "One Bank"
-    # PRIME_BANK = "Prime Bank"
-    # UCB_BANK = "UCB Bank"
-    # GIFTCARD
     _giftCard = BankingMethod.objects.filter(types="Gift Card")
-    # AMAZON = "Amazon"
-    # GOOGLE_PLAY = "Google Play"
-
-    # MOBILE_BANKING = (
-    #     (MKASH, "Mkash"),
-    #     (BKASH, "Bkash"),
-    #     (ROKET, "Roket"),
-    #     (UPAY, "Upay"),
-    #     (SURECASH, "Surecash"),
-    #     (NAGAD, "Nagad"),
-    # )
     MOBILE_BANKING = tuple((i.name, i.name) for i in _banking)
 
-    # BANK = (
-    #     (ASIA_BANK, "Asia Bank"),
-    #     (BRACK_BANK, "Brack Bank"),
-    #     (CITY_BANK, "City Bank"),
-    #     (DBBL, "DBBL"),
-    #     (EBL, "EBL"),
-    #     (EXIM_BANK, "Exim Bank"),
-    #     (ISLAMI_BANK, "Islami Bank"),
-    #     (MUTUAL_TRUST_BANK, "Mutual Trust Bank"),
-    #     (ONE_BANK, "One Bank"),
-    #     (PRIME_BANK, "Prime Bank"),
-    #     (UCB_BANK, "UCB Bank"),
-    # )
     BANK = tuple((i.name, i.name) for i in _bank)
-    # GIFT_CARD = (
-    #     (AMAZON, "Amazon"),
-    #     (GOOGLE_PLAY, "Google Play"),
-    # )
+
     GIFT_CARD = tuple((i.name, i.name) for i in _giftCard)
-    # MOBILE_RECHARGE = (
-    #     (AIRTEL, "Airtel"),
-    #     (BANGLALINK, "Banglalink"),
-    #     (GRAMEEN_PHONE, "Grameen Phone"),
-    #     (ROBI, "Robi"),
-    #     (TELETALK, "Teletalk"),
-    # )
+
     MOBILE_RECHARGE = tuple((i.name, i.name) for i in _allRecharge)
 
     phone_number = PhoneNumberField(
@@ -114,17 +53,19 @@ class NewUser(AbstractUser):
         default=MOBILE_RECHARGE[0][0],
         # max_choices=4,
     )  # type: ignore
-    # gift_card = MultiSelectField(
-    #     max_length=100,
-    #     choices=GIFT_CARD,
-    #     # max_choices=1,
-    # )  # type: ignore
+    gift_card = MultiSelectField(
+        max_length=100,
+        choices=GIFT_CARD,
+        # max_choices=1,
+    )  # type: ignore
     bank = MultiSelectField(
         max_length=100,
         choices=BANK,
         default=BANK[0][0],
         # max_choices=10,
     )  # type: ignore
+    # ? user isReseller
+    isReseller = models.BooleanField(default=False)
 
     # transaction = models.ForeignKey("app.Model", verbose_name=_(""), on_delete=models.CASCADE)
     # notification = models.ForeignKey("app.Model", verbose_name=_(""), on_delete=models.CASCADE)

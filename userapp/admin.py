@@ -38,7 +38,8 @@ fields[1] = (  # type: ignore
             "mobile_banking",
             "mobile_recharge",
             "bank",
-            # "gift_card",
+            "gift_card",
+            "isReseller",
         )
     },
 )
