@@ -53,17 +53,19 @@ class NewUser(AbstractUser):
         default=MOBILE_RECHARGE[0][0],
         # max_choices=4,
     )  # type: ignore
-    # gift_card = MultiSelectField(
-    #     max_length=100,
-    #     choices=GIFT_CARD,
-    #     # max_choices=1,
-    # )  # type: ignore
+    gift_card = MultiSelectField(
+        max_length=100,
+        choices=GIFT_CARD,
+        # max_choices=1,
+    )  # type: ignore
     bank = MultiSelectField(
         max_length=100,
         choices=BANK,
         default=BANK[0][0],
         # max_choices=10,
     )  # type: ignore
+    # ? user isReseller
+    isReseller = models.BooleanField(default=False)
 
     # transaction = models.ForeignKey("app.Model", verbose_name=_(""), on_delete=models.CASCADE)
     # notification = models.ForeignKey("app.Model", verbose_name=_(""), on_delete=models.CASCADE)

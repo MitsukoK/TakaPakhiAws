@@ -8,5 +8,8 @@
       "runtimeExecutable": "${execPath}",
       "args": ["--extensionDevelopmentPath=${workspaceFolder}"]
     }
-  ]
+  ],
+  "[python]": {
+    "editor.formatOnPaste": false
+  }
 }
