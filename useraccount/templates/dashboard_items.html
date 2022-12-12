@@ -4,7 +4,8 @@
 <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead
-      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+    >
       <tr>
         <th scope="col" class="py-3 px-6">User</th>
         <th scope="col" class="py-3 px-6">Bank Name</th>
@@ -20,7 +21,8 @@
       <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
         <th
           scope="row"
-          class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
           {{bank.user.username}}
         </th>
         <td class="py-4 px-6">{{bank.bank_name}}</td>
@@ -31,12 +33,14 @@
         <td class="py-4 px-6">
           {% if 'Declined' in bank.status %}
           <p
-            class="font-medium text-red-600 dark:text-red-500 hover:underline-offset-0">
+            class="font-medium text-red-600 dark:text-red-500 hover:underline-offset-0"
+          >
             {{bank.status}}
           </p>
           {% elif 'Approved' in bank.status%}
           <p
-            class="font-medium text-green-600 dark:text-green-500 hover:underline">
+            class="font-medium text-green-600 dark:text-green-500 hover:underline"
+          >
             {{bank.status}}
           </p>
           {% else %}
@@ -57,7 +61,8 @@
 <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead
-      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+    >
       <tr>
         <th scope="col" class="py-3 px-6">User</th>
         <th scope="col" class="py-3 px-6">Phone Number</th>
@@ -71,7 +76,8 @@
       <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
         <th
           scope="row"
-          class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
           {{bank.user.username}}
         </th>
         <td class="py-4 px-6">{{bank.phone_number}}</td>
@@ -94,7 +100,8 @@
 <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead
-      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+    >
       <tr>
         <th scope="col" class="py-3 px-6">User</th>
         <th scope="col" class="py-3 px-6">Phone Number</th>
@@ -104,11 +111,12 @@
       </tr>
     </thead>
     <tbody>
-      {% for bank in MobileBank %}
+      {% for bank in MobileRecharge %}
       <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
         <th
           scope="row"
-          class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        >
           {{bank.user.username}}
         </th>
         <td class="py-4 px-6">{{bank.phone_number}}</td>
