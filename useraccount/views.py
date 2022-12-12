@@ -191,7 +191,7 @@ class MobileRechargeView(View):
 class MobileBankView(View):
     template_name = "mobile_bank.html"
     # use all models form the user_request app
-    model = RequestMobileBankModel
+    # model = RequestMobileBankModel
 
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -207,7 +207,7 @@ class MobileBankView(View):
 class BankView(View):
     template_name = "bank_view.html"
     # use all models form the user_request app
-    model = BankingModel
+    # model = BankingModel
 
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
