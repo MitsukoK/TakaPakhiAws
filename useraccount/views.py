@@ -146,9 +146,11 @@ class DashboardView(View):
 
         context = {
             "MobileBank": RequestMobileBankModel.objects.all().order_by("-id")[:10],
-            "MobileRecharge": RequestMobileRechargeModel.objects.all().order_by("-id")[:10],
+            "MobileRecharge": RequestMobileRechargeModel.objects.all().order_by("-id")[
+                :10
+            ],
             "Banking": BankingModel.objects.all().order_by("-id")[:10],
-            "GiftCard": BankingModel.objects.all().order_by("-id")[:10],
+            # "GiftCard": BankingModel.objects.all().order_by("-id")[:10],
         }
         return render(request, self.template_name, context)
 
@@ -166,3 +168,53 @@ class DashboardView(View):
 #     }
 
 #     return render(request, "dashboard_items.html", context)
+
+
+class MobileRechargeView(View):
+    template_name = "mobile_recharge.html"
+    # use all models form the user_request app
+    model = RequestMobileRechargeModel
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("login_form")
+
+        context = {
+            "MobileRecharge": RequestMobileRechargeModel.objects.all().order_by("-id")[
+                :10
+            ],
+            # "GiftCard": BankingModel.objects.all().order_by("-id")[:10],
+        }
+        return render(request, self.template_name, context)
+
+
+class MobileBankView(View):
+    template_name = "mobile_bank.html"
+    # use all models form the user_request app
+    model = RequestMobileBankModel
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("login_form")
+
+        context = {
+            "MobileRecharge": RequestMobileBankModel.objects.all().order_by("-id")[:10],
+            # "GiftCard": BankingModel.objects.all().order_by("-id")[:10],
+        }
+        return render(request, self.template_name, context)
+
+
+class BankView(View):
+    template_name = "bank_view.html"
+    # use all models form the user_request app
+    model = BankingModel
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("login_form")
+
+        context = {
+            "MobileRecharge": BankingModel.objects.all().order_by("-id")[:10],
+            # "GiftCard": BankingModel.objects.all().order_by("-id")[:10],
+        }
+        return render(request, self.template_name, context)
