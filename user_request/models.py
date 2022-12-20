@@ -26,6 +26,7 @@ class RequestMobileBankModel(models.Model):
     bank_name = models.CharField(max_length=100)
     # logo goes here
     add_logo = models.CharField(max_length=100, null=True)
+    ip_address = models.GenericIPAddressField(null=True)
     # choice field (personal, agent)
     choice = models.CharField(
         choices=MOBILE_BANKING_CHOICE,
@@ -51,10 +52,14 @@ class RequestMobileRechargeModel(models.Model):
     ]
     # see which user is requesting
     user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
+    bank_name = models.CharField(max_length=100, null=True)
+
     # amount
     amount = models.IntegerField()
     # logo goes here
     add_logo = models.CharField(max_length=100, null=True)
+    ip_address = models.GenericIPAddressField(null=True)
+
     # phone number
     phone_number = models.CharField(max_length=100)
     # choice field (personal, agent)
@@ -85,6 +90,8 @@ class BankingModel(models.Model):
     bank_name = models.CharField(max_length=100)
     # bank account number
     bank_account_number = models.CharField(max_length=100)
+    ip_address = models.GenericIPAddressField(null=True)
+
     # bank account name
     bank_account_name = models.CharField(max_length=100)
     # branch name
