@@ -24,6 +24,8 @@ class RequestMobileBankModel(models.Model):
     phone_number = models.CharField(max_length=100)
     # bank name
     bank_name = models.CharField(max_length=100)
+    # logo goes here
+    add_logo = models.CharField(max_length=100, null=True)
     # choice field (personal, agent)
     choice = models.CharField(
         choices=MOBILE_BANKING_CHOICE,
@@ -51,6 +53,8 @@ class RequestMobileRechargeModel(models.Model):
     user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
     # amount
     amount = models.IntegerField()
+    # logo goes here
+    add_logo = models.CharField(max_length=100, null=True)
     # phone number
     phone_number = models.CharField(max_length=100)
     # choice field (personal, agent)
@@ -70,13 +74,13 @@ class RequestMobileRechargeModel(models.Model):
 
 
 #! BANKING MODEL
-
-
 class BankingModel(models.Model):
     # see which user is requesting
     user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
     # amount
     amount = models.IntegerField()
+    # logo goes here
+    add_logo = models.CharField(max_length=100, null=True)
     # bank name
     bank_name = models.CharField(max_length=100)
     # bank account number
@@ -96,3 +100,27 @@ class BankingModel(models.Model):
         return (
             f"{self.user} - {self.amount} - {self.bank_name} - {self.bank_account_name}"
         )
+
+
+#! Notification Model
+class NotificationModel(models.Model):
+    VIEWSTATUS = [
+        ("read", "Read"),
+        ("unread", "Unread"),
+    ]
+    # id = models.AutoField()
+    status = models.CharField(max_length=20, choices=VIEWSTATUS)
+    recharge = models.ForeignKey(
+        RequestMobileRechargeModel,
+        on_delete=models.CASCADE,
+        null=True,
+    )
+    bank = models.ForeignKey(
+        BankingModel,
+        on_delete=models.CASCADE,
+        null=True,
+    )
+    mobile_bank = models.ForeignKey(
+        RequestMobileBankModel, on_delete=models.CASCADE, null=True
+    )
+    updated_at = models.DateTimeField(auto_now=True)
