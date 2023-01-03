@@ -9,6 +9,10 @@ admin.site.index_title = "Admin"
 
 urlpatterns = [
     path("", include("landing.urls")),
+    path("jet/", include("jet.urls", "jet")),  # Django JET URLS
+    path(
+        "jet/dashboard/", include("jet.dashboard.urls", "jet-dashboard")
+    ),  # Django JET dashboard URLS
     path("admin/", admin.site.urls),
     path("api/", include("api.urls")),
     path("user/", include("userapp.urls")),
@@ -17,4 +21,7 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:  # new
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT,
+    )

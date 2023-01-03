@@ -1,6 +1,6 @@
 from django.db import models
-from userapp.models import NewUser
 
+from userapp.models import NewUser
 
 # STATUS
 STATUS_CHOICE = [
@@ -66,7 +66,7 @@ class RequestMobileRechargeModel(models.Model):
     status = models.CharField(choices=STATUS_CHOICE, max_length=10, default="Pending")
 
     def __str__(self) -> str:
-        return f"{self.user} - {self.amount}"
+        return f"{self.user}"
 
 
 #! BANKING MODEL
