@@ -2,8 +2,6 @@ import os
 import subprocess
 from pathlib import Path
 
-import dj_database_url
-import django_on_heroku
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,26 +35,29 @@ ALLOWED_HOSTS = ["zune360.com", "zune360.com", "https://zune360.com/", "127.0.0.
 # Application definition
 
 INSTALLED_APPS = [
-    #! django default apps
+    #!PERF: Custom admin
+    "jet",
+    "jet.dashboard",
+    #!PERF: django default apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    #! flowbite compressor (for static files)
-    "compressor",
-    #! rest framework
+    #!PERF: flowbite compressor (for static files)
+    # "compressor",
+    #!PERF: rest framework
     "rest_framework",
     "rest_framework.authtoken",
-    #! my apps
+    #!PERF: my apps
     "banking",
     "landing",
     "userapp",
     "extras",
     "useraccount",
     "user_request",
-    #! third party apps
+    #!PERF: third party apps
     "phonenumber_field",
     "multiselectfield",
 ]
@@ -142,16 +143,16 @@ REST_FRAMEWORK = {
 }
 
 
-django_on_heroku.settings(locals())
-options = DATABASES["default"].get("OPTIONS", {})
-options.pop("sslmode", None)
+# django_on_heroku.settings(locals())
+# options = DATABASES["default"].get("OPTIONS", {})
+# options.pop("sslmode", None)
 
 AUTH_USER_MODEL = "userapp.NewUser"
 # AUTH_USER_MODEL = "customauth.MyUser"
 
-COMPRESS_ROOT = BASE_DIR / "static"
-COMPRESS_ENABLED = True
-STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
+# COMPRESS_ROOT = BASE_DIR / "static"
+# COMPRESS_ENABLED = True
+# STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
 
 
 # Static files (CSS, JavaScript, Images)
@@ -159,10 +160,9 @@ STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
 
 STATIC_URL = "/static/"
 # STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    # '/var/www/static/',
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
+# ]
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -171,3 +171,20 @@ MEDIA_URL = "/media/"
 #     from .local_settings import *
 # except ImportError:
 #     pass
+
+
+JET_THEMES = [
+    {
+        "theme": "default",  # theme folder name
+        "color": "#47bac1",  # color of the theme's button in user menu
+        "title": "Default",  # theme title
+    },
+    {"theme": "green", "color": "#44b78b", "title": "Green"},
+    {"theme": "light-green", "color": "#2faa60", "title": "Light Green"},
+    {"theme": "light-violet", "color": "#a464c4", "title": "Light Violet"},
+    {"theme": "light-blue", "color": "#5EADDE", "title": "Light Blue"},
+    {"theme": "light-gray", "color": "#222", "title": "Light Gray"},
+]
+# JET_SIDE_MENU_COMPACT = True
+JET_INDEX_DASHBOARD = "jet.dashboard.dashboard.DefaultIndexDashboard"
+JET_APP_INDEX_DASHBOARD = "jet.dashboard.dashboard.DefaultAppIndexDashboard"
