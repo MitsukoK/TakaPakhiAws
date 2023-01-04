@@ -126,15 +126,15 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
-
+# TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Dhaka"
 USE_I18N = True
 
 USE_TZ = True
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-CSRF_TRUSTED_ORIGINS = ["https://tiyapakhi2.herokuapp.com"]
+# CSRF_TRUSTED_ORIGINS = ["https://tiyapakhi2.herokuapp.com"]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
