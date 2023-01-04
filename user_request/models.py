@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 from userapp.models import NewUser
@@ -15,6 +17,13 @@ class RequestMobileBankModel(models.Model):
         ("Personal", "Personal"),
         ("Agent", "Agent"),
     ]
+
+    # generate random and unique transaction id
+    transaction_id = models.CharField(
+        max_length=100,
+        unique=True,
+        default=uuid.uuid4().hex[:10].upper(),
+    )
 
     # see which user is requesting
     user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
@@ -56,6 +65,13 @@ class RequestMobileRechargeModel(models.Model):
         ("Prepaid", "Prepaid"),
         ("Postpaid", "Postpaid"),
     ]
+
+    # generate random and unique transaction id
+    transaction_id = models.CharField(
+        max_length=100,
+        unique=True,
+        default=uuid.uuid4().hex[:10].upper(),
+    )
     # see which user is requesting
     user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
     bank_name = models.CharField(max_length=100, null=True)
@@ -91,6 +107,13 @@ class RequestMobileRechargeModel(models.Model):
 
 #! BANKING MODEL
 class BankingModel(models.Model):
+
+    # generate random and unique transaction id
+    transaction_id = models.CharField(
+        max_length=100,
+        unique=True,
+        default=uuid.uuid4().hex[:10].upper(),
+    )
     # see which user is requesting
     user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
     # amount
@@ -123,4 +146,3 @@ class BankingModel(models.Model):
 
     class Meta:
         verbose_name_plural = "Banking"
-

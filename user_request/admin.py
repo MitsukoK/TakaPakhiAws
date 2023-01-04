@@ -23,7 +23,7 @@ class RequestMobileBankModelAdmin(admin.ModelAdmin):
         "colored_status",
     )
     list_filter = (
-        ("user", RelatedFieldAjaxListFilter),
+        "user",
         "amount",
         # "phone_number",
         "bank_name",
@@ -105,7 +105,7 @@ class RequestMobileRechargeModelAdmin(admin.ModelAdmin):
         "colored_status",
     )
     list_filter = (
-        ("user", RelatedFieldAjaxListFilter),
+        "user",
         "amount",
         "is_term",
         "created_at",
@@ -167,7 +167,7 @@ class BankingModelAdmin(admin.ModelAdmin):
         "colored_status",
     )
     list_filter = (
-        ("user", RelatedFieldAjaxListFilter),
+        "user",
         "amount",
         "bank_name",
         "is_term",
