@@ -1,5 +1,7 @@
 from django.contrib import admin
+from django.utils import timezone
 from django.utils.html import format_html
+from jet.filters import RelatedFieldAjaxListFilter
 
 from .models import (BankingModel, RequestMobileBankModel,
                      RequestMobileRechargeModel)
@@ -16,10 +18,12 @@ class RequestMobileBankModelAdmin(admin.ModelAdmin):
         "choice",
         "is_term",
         "created_at",
+        "ip_address",
+        "updated_at",
         "colored_status",
     )
     list_filter = (
-        "user",
+        ("user", RelatedFieldAjaxListFilter),
         "amount",
         # "phone_number",
         "bank_name",
@@ -58,14 +62,29 @@ class RequestMobileBankModelAdmin(admin.ModelAdmin):
             obj.status,
         )
 
+    # search lookup
+    def get_search_results(self, request, queryset, search_term):
+        queryset, use_distinct = super().get_search_results(
+            request, queryset, search_term
+        )
+        try:
+            search_term_as_int = int(search_term)
+        except ValueError:
+            pass
+        else:
+            queryset |= self.model.objects.filter(pk=search_term_as_int)
+        return queryset, use_distinct
+
     @admin.action(description="Approve selected")
     def approve(self, request, queryset):
         queryset.update(status="Approved")
+        queryset.update(updated_at=timezone.now())
         self.message_user(request, "Selected requests approved")
 
     @admin.action(description="Decline selected")
     def decline(self, request, queryset):
         queryset.update(status="Declined")
+        queryset.update(updated_at=timezone.now())
         self.message_user(request, "Selected requests declined")
 
     actions = ["approve", "decline"]
@@ -81,10 +100,12 @@ class RequestMobileRechargeModelAdmin(admin.ModelAdmin):
         "choice",
         "is_term",
         "created_at",
+        "ip_address",
+        "updated_at",
         "colored_status",
     )
     list_filter = (
-        "user",
+        ("user", RelatedFieldAjaxListFilter),
         "amount",
         "is_term",
         "created_at",
@@ -141,10 +162,12 @@ class BankingModelAdmin(admin.ModelAdmin):
         "bank_account_number",
         "is_term",
         "created_at",
+        "ip_address",
+        "updated_at",
         "colored_status",
     )
     list_filter = (
-        "user",
+        ("user", RelatedFieldAjaxListFilter),
         "amount",
         "bank_name",
         "is_term",
