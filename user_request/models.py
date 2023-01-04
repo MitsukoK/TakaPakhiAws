@@ -41,6 +41,26 @@ class RequestMobileBankModel(models.Model):
     # status
     status = models.CharField(choices=STATUS_CHOICE, max_length=10, default="Pending")
 
+    def save(self, *args, **kwargs):
+        # check if the status has changed
+        if (
+            self.pk is not None
+            and self.status != RequestMobileRechargeModel.objects.get(pk=self.pk).status
+        ):
+            # create a new instance with similar field values except for the status
+            new_request = RequestMobileRechargeModel(
+                user=self.user,
+                bank_name=self.bank_name,
+                amount=self.amount,
+                phone_number=self.phone_number,
+                choice=self.choice,
+                is_term=self.is_term,
+                status=self.status,
+            )
+            new_request.save()
+        # call the original save method
+        super().save(*args, **kwargs)
+
     def __str__(self) -> str:
         return f"{self.user} - {self.amount}"
 
@@ -82,6 +102,26 @@ class RequestMobileRechargeModel(models.Model):
     # status
     status = models.CharField(choices=STATUS_CHOICE, max_length=10, default="Pending")
 
+    def save(self, *args, **kwargs):
+        # check if the status has changed
+        if (
+            self.pk is not None
+            and self.status != RequestMobileRechargeModel.objects.get(pk=self.pk).status
+        ):
+            # create a new instance with similar field values except for the status
+            new_request = RequestMobileRechargeModel(
+                user=self.user,
+                bank_name=self.bank_name,
+                amount=self.amount,
+                phone_number=self.phone_number,
+                choice=self.choice,
+                is_term=self.is_term,
+                status=self.status,
+            )
+            new_request.save()
+        # call the original save method
+        super().save(*args, **kwargs)
+
     def __str__(self) -> str:
         return f"{self.user}"
 
@@ -115,6 +155,36 @@ class BankingModel(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     # status
     status = models.CharField(choices=STATUS_CHOICE, max_length=10, default="Pending")
+
+    def save(self, *args, **kwargs):
+        print("thisis primary key -> ", self.pk)
+        print("this is self status -> ", self.status)
+        print(BankingModel.objects.filter(pk=self.pk))
+        print("checking their status -> ", end="")
+        print(
+            self.status != BankingModel.objects.filter(pk=self.pk).values()[0]["status"]
+        )
+        # check if the status has changed
+        if (
+            self.pk is not None
+            and self.status
+            != BankingModel.objects.filter(pk=self.pk).values()[0]["status"]
+        ):
+            # create a new instance with similar field values except for the status
+            new_request = BankingModel(
+                user=self.user,
+                bank_name=self.bank_name,
+                amount=self.amount,
+                add_log=self.add_logo,
+                bank_account_number=self.bank_account_number,
+                ip_address=self.ip_address,
+                choice=self.choice,
+                is_term=self.is_term,
+                status=self.status,
+            )
+            new_request.save()
+        # call the original save method
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return (
