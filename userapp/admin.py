@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+
 from .models import NewUser
 
 # Register your models here.
@@ -43,6 +44,10 @@ fields[1] = (  # type: ignore
         )
     },
 )
+
+# style the mobile banking, mobile recharge, bank, gift card fields
+
+
 UserAdmin.fieldsets = tuple(fields)
 
 
