@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from .models import (BankingModel, RequestMobileBankModel,
                      RequestMobileRechargeModel)
@@ -15,7 +16,7 @@ class RequestMobileBankModelAdmin(admin.ModelAdmin):
         "choice",
         "is_term",
         "created_at",
-        "status",
+        "colored_status",
     )
     list_filter = (
         "user",
@@ -42,6 +43,21 @@ class RequestMobileBankModelAdmin(admin.ModelAdmin):
 
     ordering = ("-created_at",)
 
+    def colored_status(self, obj):
+        if obj.status == "Pending":
+            color_code = "blue"
+        elif obj.status == "Approved":
+            color_code = "green"
+        elif obj.status == "Declined":
+            color_code = "red"
+        else:
+            color_code = "black"
+        return format_html(
+            '<span style="color: {};">{}</span>',
+            color_code,
+            obj.status,
+        )
+
     @admin.action(description="Approve selected")
     def approve(self, request, queryset):
         queryset.update(status="Approved")
@@ -65,7 +81,7 @@ class RequestMobileRechargeModelAdmin(admin.ModelAdmin):
         "choice",
         "is_term",
         "created_at",
-        "status",
+        "colored_status",
     )
     list_filter = (
         "user",
@@ -85,6 +101,21 @@ class RequestMobileRechargeModelAdmin(admin.ModelAdmin):
     editable_fields = ("status",)
 
     ordering = ("-created_at",)
+
+    def colored_status(self, obj):
+        if obj.status == "Pending":
+            color_code = "blue"
+        elif obj.status == "Approved":
+            color_code = "green"
+        elif obj.status == "Declined":
+            color_code = "red"
+        else:
+            color_code = "black"
+        return format_html(
+            '<span style="color: {};">{}</span>',
+            color_code,
+            obj.status,
+        )
 
     @admin.action(description="Approve selected")
     def approve(self, request, queryset):
@@ -110,7 +141,7 @@ class BankingModelAdmin(admin.ModelAdmin):
         "bank_account_number",
         "is_term",
         "created_at",
-        "status",
+        "colored_status",
     )
     list_filter = (
         "user",
@@ -132,6 +163,21 @@ class BankingModelAdmin(admin.ModelAdmin):
 
     def amount_c(self, obj):
         return f"{obj.amount} tk"
+
+    def colored_status(self, obj):
+        if obj.status == "Pending":
+            color_code = "blue"
+        elif obj.status == "Approved":
+            color_code = "green"
+        elif obj.status == "Declined":
+            color_code = "red"
+        else:
+            color_code = "black"
+        return format_html(
+            '<span style="color: {};">{}</span>',
+            color_code,
+            obj.status,
+        )
 
     @admin.action(description="Approve selected")
     def approve(self, request, queryset):
