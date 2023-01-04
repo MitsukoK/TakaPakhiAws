@@ -36,11 +36,17 @@ class RequestMobileBankModel(models.Model):
     is_term = models.BooleanField()
     # created at
     created_at = models.DateTimeField(auto_now_add=True)
+    # updated at value is auto updated when the model is updated
+    updated_at = models.DateTimeField(auto_now=True)
     # status
     status = models.CharField(choices=STATUS_CHOICE, max_length=10, default="Pending")
 
     def __str__(self) -> str:
         return f"{self.user} - {self.amount}"
+
+    class Meta:
+        verbose_name = "Mobile Banking"
+        verbose_name_plural = "Mobile Banking"
 
 
 #! MOBILE RECHARGE MODEL
@@ -71,11 +77,16 @@ class RequestMobileRechargeModel(models.Model):
     is_term = models.BooleanField()
     # created at
     created_at = models.DateTimeField(auto_now_add=True)
+    # updated at value is auto updated when the model is updated
+    updated_at = models.DateTimeField(auto_now=True)
     # status
     status = models.CharField(choices=STATUS_CHOICE, max_length=10, default="Pending")
 
     def __str__(self) -> str:
         return f"{self.user}"
+
+    class Meta:
+        verbose_name_plural = "Mobile Recharge"
 
 
 #! BANKING MODEL
@@ -100,6 +111,8 @@ class BankingModel(models.Model):
     is_term = models.BooleanField()
     # created at
     created_at = models.DateTimeField(auto_now_add=True)
+    # updated at value is auto updated when the model is updated
+    updated_at = models.DateTimeField(auto_now=True)
     # status
     status = models.CharField(choices=STATUS_CHOICE, max_length=10, default="Pending")
 
@@ -108,26 +121,6 @@ class BankingModel(models.Model):
             f"{self.user} - {self.amount} - {self.bank_name} - {self.bank_account_name}"
         )
 
+    class Meta:
+        verbose_name_plural = "Banking"
 
-#! Notification Model
-class NotificationModel(models.Model):
-    VIEWSTATUS = [
-        ("read", "Read"),
-        ("unread", "Unread"),
-    ]
-    # id = models.AutoField()
-    status = models.CharField(max_length=20, choices=VIEWSTATUS)
-    recharge = models.ForeignKey(
-        RequestMobileRechargeModel,
-        on_delete=models.CASCADE,
-        null=True,
-    )
-    bank = models.ForeignKey(
-        BankingModel,
-        on_delete=models.CASCADE,
-        null=True,
-    )
-    mobile_bank = models.ForeignKey(
-        RequestMobileBankModel, on_delete=models.CASCADE, null=True
-    )
-    updated_at = models.DateTimeField(auto_now=True)
