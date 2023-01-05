@@ -1,5 +1,4 @@
 import uuid
-
 from django.db import models
 
 from userapp.models import NewUser
@@ -29,6 +28,14 @@ class OfferModel(models.Model):
         verbose_name_plural = "Offers"
 
 
+# generate random and unique fund id
+def generate_fund_id():
+    fund_id = uuid.uuid4().hex[:10].upper()
+    if FundModel.objects.filter(fund_id=fund_id).exists():
+        return generate_fund_id()
+    return fund_id
+
+
 class FundModel(models.Model):
 
     # user
@@ -38,11 +45,7 @@ class FundModel(models.Model):
     # fund created at
     fund_created_at = models.DateTimeField(auto_now_add=True)
     # auto generate random and unique fund id
-    fund_id = models.CharField(
-        max_length=100,
-        unique=True,
-        default=uuid.uuid4().hex[:10].upper(),
-    )
+    fund_id = models.CharField(max_length=10, default=generate_fund_id, editable=False, unique=True)
 
     def __str__(self) -> str:
         return f"{self.user} - {self.fund_amount}"
