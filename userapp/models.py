@@ -1,10 +1,16 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import MinValueValidator, MaxValueValidator
-from phonenumber_field.modelfields import PhoneNumberField
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
 from multiselectfield import MultiSelectField
+from phonenumber_field.modelfields import PhoneNumberField
 
 from banking.models import BankingMethod
+
+# def generate_newUser_id():
+#     _id = uuid.uuid4().hex[:5].upper()
+#     if NewUser.objects.filter(client_identity_id=_id).exists():
+#         return generate_newUser_id()
+#     return _id
 
 
 class NewUser(AbstractUser):
@@ -27,7 +33,10 @@ class NewUser(AbstractUser):
     # client_identity_id = models.UUIDField(
     #     primary_key=True, default=uuid.uuid4, editable=False
     # )
-    # client current balance
+    # client identity id
+    # client_identity_id = models.UUIDField(
+    #     primary_key=True, default=uuid.uuid4, editable=False
+    # )  # client current balance
     current_balance = models.IntegerField(
         validators=[
             MinValueValidator(0_000_000_000_000),

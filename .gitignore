@@ -164,3 +164,7 @@ tekapakhi/__pycache__/*
 userapp/__pycache__/*.pyc
 static/CACHE/*
 userapp/migrations/*
+banking/migrations/0001_initial.py
+user_request/migrations/0001_initial.py
+user_request/migrations/0002_initial.py
+userapp/migrations/0001_initial.py
