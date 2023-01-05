@@ -1,4 +1,5 @@
 import uuid
+import uuid
 from django.db import models
 
 from userapp.models import NewUser
