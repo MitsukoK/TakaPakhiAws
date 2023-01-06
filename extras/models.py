@@ -1,6 +1,8 @@
 import uuid
-import uuid
+
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from userapp.models import NewUser
 
@@ -46,18 +48,41 @@ class FundModel(models.Model):
     # fund created at
     fund_created_at = models.DateTimeField(auto_now_add=True)
     # auto generate random and unique fund id
-    fund_id = models.CharField(max_length=10, default=generate_fund_id, editable=False, unique=True)
+    fund_id = models.CharField(
+        max_length=10, default=generate_fund_id, editable=False, unique=True
+    )
 
     def __str__(self) -> str:
         return f"{self.user} - {self.fund_amount}"
 
     def save_model(self, request, obj, form, change):
-        # add money to user ammount when fund is created
+        # add money to user amount when fund is created
+        print("saving method called")
         if not change:
-            obj.user.user_amount += obj.fund_amount
+            print("this is new fund -> ", obj.fund_amount)
+            print("this is user current balance -> ", obj.user.current_balance)
+
+            obj.user.current_balance += obj.fund_amount
+            print("this is user current balance after -> ", obj.user.current_balance)
+
             obj.user.save()
         super().save_model(request, obj, form, change)
 
     class Meta:
         verbose_name = "Fund"
         verbose_name_plural = "Funds"
+
+
+@receiver(post_save, sender=FundModel)
+def fund_created(sender, instance, created, **kwargs):
+    if created:
+        print("fund created")
+        print("this is new fund -> ", instance.fund_amount)
+        print("this is user current balance -> ", instance.user.current_balance)
+
+        instance.user.current_balance += instance.fund_amount
+        print("this is user current balance after -> ", instance.user.current_balance)
+
+        instance.user.save()
+    else:
+        print("fund updated")
