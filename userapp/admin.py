@@ -106,6 +106,7 @@ class CustomUserAdmin(UserAdmin):
     isReseller.admin_order_field = "isReseller"  # type: ignore
 
     list_display = (
+        "client_identity_id",
         "username",
         "email",
         "phone_number",

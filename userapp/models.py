@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -11,6 +13,13 @@ from banking.models import BankingMethod
 #     if NewUser.objects.filter(client_identity_id=_id).exists():
 #         return generate_newUser_id()
 #     return _id
+
+# generate random and unique fund id
+def generate_user_id():
+    fund_id = uuid.uuid4().hex[:10].upper()
+    if NewUser.objects.filter(client_identity_id=fund_id).exists():
+        return generate_user_id()
+    return fund_id
 
 
 class NewUser(AbstractUser):
@@ -37,6 +46,14 @@ class NewUser(AbstractUser):
     # client_identity_id = models.UUIDField(
     #     primary_key=True, default=uuid.uuid4, editable=False
     # )  # client current balance
+    client_identity_id = models.CharField(
+        max_length=10,
+        default=generate_user_id,
+        editable=False,
+        unique=True,
+        auto_created=True,
+    )
+
     current_balance = models.IntegerField(
         validators=[
             MinValueValidator(0_000_000_000_000),
@@ -49,7 +66,7 @@ class NewUser(AbstractUser):
             MinValueValidator(0_000),
             MaxValueValidator(9_999),
         ],
-        default=0000,
+        default=1234,
     )
 
     mobile_banking = MultiSelectField(

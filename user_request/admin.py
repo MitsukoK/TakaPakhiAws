@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.utils import timezone
 from django.utils.html import format_html
-from jet.filters import RelatedFieldAjaxListFilter
 
 from .models import (BankingModel, RequestMobileBankModel,
                      RequestMobileRechargeModel)
@@ -11,6 +10,7 @@ from .models import (BankingModel, RequestMobileBankModel,
 @admin.register(RequestMobileBankModel)
 class RequestMobileBankModelAdmin(admin.ModelAdmin):
     list_display = (
+        "transaction_id",
         "user",
         "amount",
         "phone_number",
@@ -77,8 +77,29 @@ class RequestMobileBankModelAdmin(admin.ModelAdmin):
 
     @admin.action(description="Approve selected")
     def approve(self, request, queryset):
-        queryset.update(status="Approved")
-        queryset.update(updated_at=timezone.now())
+        for q in queryset:
+            try:
+                if q.status != "Approved":
+                    if q.user.current_balance >= q.amount:
+                        print("user has enough balance", q.user.current_balance)
+                        queryset.filter(user=q.user, pk=q.pk).update(status="Approved")
+                        print("status updated")
+                        queryset.filter(user=q.user, pk=q.pk).update(
+                            updated_at=timezone.now()
+                        )
+                        # check if status updated or not
+                        q.user.current_balance -= q.amount
+                        q.user.save()
+                    else:
+                        # only update this user's status to declined if he/she has insufficient balance using queryset
+                        queryset.filter(user=q.user, pk=q.pk).update(status="Declined")
+                        queryset.filter(user=q.user, pk=q.pk).update(
+                            updated_at=timezone.now()
+                        )
+                        q.save()
+            except Exception as e:
+                print(e)
+                pass
         self.message_user(request, "Selected requests approved")
 
     @admin.action(description="Decline selected")
@@ -94,6 +115,7 @@ class RequestMobileBankModelAdmin(admin.ModelAdmin):
 @admin.register(RequestMobileRechargeModel)
 class RequestMobileRechargeModelAdmin(admin.ModelAdmin):
     list_display = (
+        "transaction_id",
         "user",
         "amount",
         "phone_number",
@@ -140,7 +162,29 @@ class RequestMobileRechargeModelAdmin(admin.ModelAdmin):
 
     @admin.action(description="Approve selected")
     def approve(self, request, queryset):
-        queryset.update(status="Approved")
+        for q in queryset:
+            try:
+                if q.status != "Approved":
+                    if q.user.current_balance >= q.amount:
+                        print("user has enough balance", q.user.current_balance)
+                        queryset.filter(user=q.user, pk=q.pk).update(status="Approved")
+                        print("status updated")
+                        queryset.filter(user=q.user, pk=q.pk).update(
+                            updated_at=timezone.now()
+                        )
+                        # check if status updated or not
+                        q.user.current_balance -= q.amount
+                        q.user.save()
+                    else:
+                        # only update this user's status to declined if he/she has insufficient balance using queryset
+                        queryset.filter(user=q.user, pk=q.pk).update(status="Declined")
+                        queryset.filter(user=q.user, pk=q.pk).update(
+                            updated_at=timezone.now()
+                        )
+                        q.save()
+            except Exception as e:
+                print(e)
+                pass
         self.message_user(request, "Selected requests approved")
 
     @admin.action(description="Decline selected")
@@ -155,6 +199,7 @@ class RequestMobileRechargeModelAdmin(admin.ModelAdmin):
 @admin.register(BankingModel)
 class BankingModelAdmin(admin.ModelAdmin):
     list_display = (
+        "transaction_id",
         "user",
         "amount_c",
         "bank_name",
@@ -204,12 +249,40 @@ class BankingModelAdmin(admin.ModelAdmin):
 
     @admin.action(description="Approve selected")
     def approve(self, request, queryset):
-        queryset.update(status="Approved")
+        # get all selected users and update their current balance
+        # queryset.update(status="Approved")
+        # queryset.update(updated_at=timezone.now())
+        for q in queryset:
+            try:
+                if q.status != "Approved":
+                    if q.user.current_balance >= q.amount:
+                        print("user has enough balance", q.user.current_balance)
+                        queryset.filter(user=q.user, pk=q.pk).update(status="Approved")
+                        print("status updated")
+                        queryset.filter(user=q.user, pk=q.pk).update(
+                            updated_at=timezone.now()
+                        )
+                        # check if status updated or not
+                        q.user.current_balance -= q.amount
+                        q.user.save()
+                    else:
+                        # only update this user's status to declined if he/she has insufficient balance using queryset
+                        queryset.filter(user=q.user, pk=q.pk).update(status="Declined")
+                        queryset.filter(user=q.user, pk=q.pk).update(
+                            updated_at=timezone.now()
+                        )
+                        q.save()
+            except Exception as e:
+                print(e)
+                pass
+            # q.user.current_balance += q.amount
+            # q.user.save()
         self.message_user(request, "Selected requests approved")
 
     @admin.action(description="Decline selected")
     def decline(self, request, queryset):
         queryset.update(status="Declined")
+        queryset.update(updated_at=timezone.now())
         self.message_user(request, "Selected requests declined")
 
     actions = ["approve", "decline"]

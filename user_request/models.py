@@ -1,6 +1,8 @@
 import uuid
 
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from userapp.models import NewUser
 
@@ -12,25 +14,25 @@ STATUS_CHOICE = [
 ]
 
 
-# def generate_mobile_bank_id():
-#     _id = uuid.uuid4().hex[:5].upper()
-#     if RequestMobileBankModel.objects.filter(transaction_id=_id).exists():
-#         return generate_mobile_bank_id()
-#     return _id
+def generate_mobile_recharge():
+    fund_id = uuid.uuid4().hex[:10].upper()
+    if RequestMobileRechargeModel.objects.filter(transaction_id=fund_id).exists():
+        return generate_mobile_recharge()
+    return fund_id
 
 
-# def generate_mobile_recharge_id():
-#     _id = uuid.uuid4().hex[:5].upper()
-#     if RequestMobileRechargeModel.objects.filter(transaction_id=_id).exists():
-#         return generate_mobile_recharge_id()
-#     return _id
+def generate_mobile_bank():
+    fund_id = uuid.uuid4().hex[:10].upper()
+    if RequestMobileBankModel.objects.filter(transaction_id=fund_id).exists():
+        return generate_mobile_bank()
+    return fund_id
 
 
-# def generate_bank_id():
-#     _id = uuid.uuid4().hex[:5].upper()
-#     if BankingModel.objects.filter(transaction_id=_id).exists():
-#         return generate_bank_id()
-#     return _id
+def generate_bank():
+    fund_id = uuid.uuid4().hex[:10].upper()
+    if BankingModel.objects.filter(transaction_id=fund_id).exists():
+        return generate_bank()
+    return fund_id
 
 
 #! MOBILE BANKING MODEL
@@ -42,9 +44,13 @@ class RequestMobileBankModel(models.Model):
     ]
 
     # generate random and unique transaction id
-    # transaction_id = models.UUIDField(
-    #     primary_key=True, default=uuid.uuid4, editable=False
-    # )
+    transaction_id = models.CharField(
+        max_length=10,
+        default=generate_mobile_bank,
+        editable=False,
+        unique=True,
+        auto_created=True,
+    )
     # see which user is requesting
     user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
     # amount
@@ -72,21 +78,19 @@ class RequestMobileBankModel(models.Model):
 
     def save(self, *args, **kwargs):
         # check if the status has changed
-        if (
-            self.pk is not None
-            and self.status != RequestMobileRechargeModel.objects.get(pk=self.pk).status
-        ):
-            # create a new instance with similar field values except for the status
-            new_request = RequestMobileRechargeModel(
-                user=self.user,
-                bank_name=self.bank_name,
-                amount=self.amount,
-                phone_number=self.phone_number,
-                choice=self.choice,
-                is_term=self.is_term,
-                status=self.status,
-            )
-            new_request.save()
+        if self.pk is not None:
+            if self.status != RequestMobileRechargeModel.objects.get(pk=self.pk).status:
+                # create a new instance with similar field values except for the status
+                new_request = RequestMobileRechargeModel(
+                    user=self.user,
+                    bank_name=self.bank_name,
+                    amount=self.amount,
+                    phone_number=self.phone_number,
+                    choice=self.choice,
+                    is_term=self.is_term,
+                    status=self.status,
+                )
+                new_request.save()
         # call the original save method
         super().save(*args, **kwargs)
 
@@ -98,6 +102,24 @@ class RequestMobileBankModel(models.Model):
         verbose_name_plural = "Mobile Banking"
 
 
+@receiver(post_save, sender=RequestMobileBankModel)
+def create_request_mobile_bank(sender, instance, created, **kwargs):
+    # check if the user's current balance is greater than the amount
+    if instance.user.current_balance >= instance.amount:
+        # deduct the amount from the user's current balance
+        instance.user.current_balance -= instance.amount
+        # save the user's current balance
+        instance.user.save()
+        # save the request
+        instance.save()
+    else:
+        # if the user's current balance is less than the amount
+        # set the status to declined
+        instance.status = "Declined"
+        # save the request
+        instance.save()
+
+
 #! MOBILE RECHARGE MODEL
 class RequestMobileRechargeModel(models.Model):
     # mobile banking choices
@@ -107,9 +129,14 @@ class RequestMobileRechargeModel(models.Model):
     ]
 
     # generate random and unique transaction id
-    # transaction_id = models.UUIDField(
-    #     primary_key=True, default=uuid.uuid4, editable=False
-    # )  # see which user is requesting
+    transaction_id = models.CharField(
+        max_length=10,
+        default=generate_mobile_recharge,
+        editable=False,
+        unique=True,
+        auto_created=True,
+    )
+    # see which user is requesting
     user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
     bank_name = models.CharField(max_length=100, null=True)
 
@@ -137,21 +164,19 @@ class RequestMobileRechargeModel(models.Model):
 
     def save(self, *args, **kwargs):
         # check if the status has changed
-        if (
-            self.pk is not None
-            and self.status != RequestMobileRechargeModel.objects.get(pk=self.pk).status
-        ):
-            # create a new instance with similar field values except for the status
-            new_request = RequestMobileRechargeModel(
-                user=self.user,
-                bank_name=self.bank_name,
-                amount=self.amount,
-                phone_number=self.phone_number,
-                choice=self.choice,
-                is_term=self.is_term,
-                status=self.status,
-            )
-            new_request.save()
+        if self.pk is not None:
+            if self.status != RequestMobileRechargeModel.objects.get(pk=self.pk).status:
+                # create a new instance with similar field values except for the status
+                new_request = RequestMobileRechargeModel(
+                    user=self.user,
+                    bank_name=self.bank_name,
+                    amount=self.amount,
+                    phone_number=self.phone_number,
+                    choice=self.choice,
+                    is_term=self.is_term,
+                    status=self.status,
+                )
+                new_request.save()
         # call the original save method
         super().save(*args, **kwargs)
 
@@ -162,14 +187,35 @@ class RequestMobileRechargeModel(models.Model):
         verbose_name_plural = "Mobile Recharge"
 
 
+@receiver(post_save, sender=RequestMobileRechargeModel)
+def create_request_mobile_recharge(sender, instance, created, **kwargs):
+    # check if the user's current balance is greater than the amount
+    if instance.user.current_balance >= instance.amount:
+        # deduct the amount from the user's current balance
+        instance.user.current_balance -= instance.amount
+        # save the user's current balance
+        instance.user.save()
+        # save the request
+        instance.save()
+    else:
+        # if the user's current balance is less than the amount
+        # set the status to declined
+        instance.status = "Declined"
+        # save the request
+        instance.save()
+
+
 #! BANKING MODEL
 class BankingModel(models.Model):
 
     # generate random and unique transaction id
-    # transaction_id = models.UUIDField(
-    #     primary_key=True, default=uuid.uuid4, editable=False
-    # )
-    # see which user is requesting
+    transaction_id = models.CharField(
+        max_length=10,
+        default=generate_bank,
+        editable=False,
+        unique=True,
+        auto_created=True,
+    )  # see which user is requesting
     user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
     # amount
     amount = models.IntegerField()
@@ -197,30 +243,27 @@ class BankingModel(models.Model):
     def save(self, *args, **kwargs):
         print("thisis primary key -> ", self.pk)
         print("this is self status -> ", self.status)
-        print(BankingModel.objects.filter(pk=self.pk))
         print("checking their status -> ", end="")
-        print(
-            self.status != BankingModel.objects.filter(pk=self.pk).values()[0]["status"]
-        )
+
         # check if the status has changed
-        if (
-            self.pk is not None
-            and self.status
-            != BankingModel.objects.filter(pk=self.pk).values()[0]["status"]
-        ):
-            # create a new instance with similar field values except for the status
-            new_request = BankingModel(
-                user=self.user,
-                bank_name=self.bank_name,
-                amount=self.amount,
-                add_log=self.add_logo,
-                bank_account_number=self.bank_account_number,
-                ip_address=self.ip_address,
-                choice=self.choice,
-                is_term=self.is_term,
-                status=self.status,
-            )
-            new_request.save()
+        if self.pk is not None:
+            if (
+                self.status
+                != BankingModel.objects.filter(pk=self.pk).values().first()["status"]
+            ):
+                # create a new instance with similar field values except for the status
+                new_request = BankingModel(
+                    user=self.user,
+                    bank_name=self.bank_name,
+                    amount=self.amount,
+                    add_log=self.add_logo,
+                    bank_account_number=self.bank_account_number,
+                    ip_address=self.ip_address,
+                    is_term=self.is_term,
+                    status=self.status,
+                )
+                new_request.save()
+
         # call the original save method
         super().save(*args, **kwargs)
 
@@ -231,3 +274,21 @@ class BankingModel(models.Model):
 
     class Meta:
         verbose_name_plural = "Banking"
+
+
+# @receiver(post_save, sender=BankingModel)
+# def create_request_banking(sender, instance, created, **kwargs):
+#     # check if the user's current balance is greater than the amount
+#     if instance.user.current_balance >= instance.amount:
+#         # deduct the amount from the user's current balance
+#         instance.user.current_balance -= instance.amount
+#         # save the user's current balance
+#         instance.user.save()
+#         # save the request
+#         instance.save()
+#     else:
+#         # if the user's current balance is less than the amount
+#         # set the status to declined
+#         instance.status = "Declined"
+#         # save the request
+#         instance.save()
