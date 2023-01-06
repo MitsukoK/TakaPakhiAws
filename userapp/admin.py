@@ -75,29 +75,6 @@ class CustomUserAdmin(UserAdmin):
     )
 
     # set each mobile_banking, mobile_recharge, bank, gift_card in action
-    def mobile_banking(self, obj):
-        return obj.mobile_banking
-
-    mobile_banking.short_description = "Mobile Banking"  # type: ignore
-    mobile_banking.admin_order_field = "mobile_banking"  # type: ignore
-
-    def mobile_recharge(self, obj):
-        return obj.mobile_recharge
-
-    mobile_recharge.short_description = "Mobile Recharge"  # type: ignore
-    mobile_recharge.admin_order_field = "mobile_recharge"  # type: ignore
-
-    def bank(self, obj):
-        return obj.bank
-
-    bank.short_description = "Bank"  # type: ignore
-    bank.admin_order_field = "bank"  # type: ignore
-
-    def gift_card(self, obj):
-        return obj.gift_card
-
-    gift_card.short_description = "Gift Card"  # type: ignore
-    gift_card.admin_order_field = "gift_card"  # type: ignore
 
     def isReseller(self, obj):
         return obj.isReseller
@@ -163,10 +140,6 @@ class CustomUserAdmin(UserAdmin):
     list_per_page = 25
 
     actions = [
-        "mobile_banking",
-        "mobile_recharge",
-        "bank",
-        "gift_card",
         "isReseller",
     ]
 

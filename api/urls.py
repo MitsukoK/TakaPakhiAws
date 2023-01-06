@@ -2,9 +2,9 @@ from django.urls import path
 from rest_framework.authtoken.views import obtain_auth_token
 
 from extras.views import FundListAPIView, OfferListAPIView
-from userapp.views import (LogoutView, UserBankView, UserCurrentBalanceView,
-                           UserDetailView, UserMobileBankView,
-                           UserRechargeView)
+from userapp.views import (LogoutView, UserBankView, UserChangePinView,
+                           UserCurrentBalanceView, UserDetailView,
+                           UserMobileBankView, UserRechargeView)
 
 # from .views import MobileRecharge, MobileBank, Bank
 
@@ -20,6 +20,11 @@ urlpatterns = [
         "user/current_balance/",
         UserCurrentBalanceView.as_view(),
         name="user_current_balance",
+    ),
+    path(
+        "user/change_pin/",
+        UserChangePinView.as_view(),
+        name="user_change_pin",
     ),
     #! extras app URLS
     path("fund/", FundListAPIView.as_view(), name="fund"),

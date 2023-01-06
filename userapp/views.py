@@ -1,12 +1,14 @@
-from rest_framework.status import HTTP_200_OK
-from rest_framework.views import APIView
-from rest_framework.response import Response
-
+from django.urls.exceptions import Http404
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
-from userapp.models import NewUser
-from userapp.serializer import NewUserSerializer
+from rest_framework.response import Response
+from rest_framework.status import (HTTP_200_OK, HTTP_400_BAD_REQUEST,
+                                   HTTP_401_UNAUTHORIZED)
+from rest_framework.views import APIView
 
 from banking.models import BankingMethod
+from userapp.models import NewUser
+from userapp.serializer import ChangePinSerializer, NewUserSerializer
 
 # Create your views here.
 
@@ -169,3 +171,36 @@ class UserFullDetailsView(APIView):
             # current balance
             _full_details = _user
             return Response(_full_details, status=HTTP_200_OK)
+
+
+# class UserChangePinView(ListCreateAPIView):
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = ChangePinSerializer
+
+#     def get_queryset(self):
+#         return NewUser.objects.filter(id=self.request.user.id)
+
+
+class UserChangePinView(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ChangePinSerializer
+
+    def get_queryset(self):
+        return NewUser.objects.filter(id=self.request.user.id)
+
+    def put(self, req):
+        if req.user.is_authenticated:
+            _user = NewUser.objects.get(id=req.user.id)
+            serializer = ChangePinSerializer(data=req.data)
+            if serializer.is_valid():
+                old_pin = serializer.data.get("old_pin")
+                new_pin = serializer.data.get("new_pin")
+                current_pin = _user.user_pin
+                if old_pin == current_pin:
+                    _user.user_pin = new_pin
+                    _user.save()
+                    return Response("Pin Changed", status=HTTP_200_OK)
+                elif old_pin != current_pin:
+                    return Response("Old Pin is incorrect", status=HTTP_400_BAD_REQUEST)
+            else:
+                return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
